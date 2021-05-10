@@ -763,14 +763,14 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
 
     ttHMetric_t hMetric = getHMetric(code);
     uint16_t width = this->characterSize * (glyph.xMax - glyph.xMin) / (this->yMax - this->yMin);
-
-    //Line breaks when reaching the edge of the display
-    if((hMetric.leftSideBearing + width + _x) > this->end_x){
+    //Line breaks when reaching the edge of the display 
+    if(((hMetric.leftSideBearing + width + _x) > this->end_x) && this->breakLine){
       _x = this->start_x;
       _y += this->characterSize;
       if(_y > this->end_y){
         break;
       }
+      Serial.println("newline");
     }
 
     //Not compatible with Compound glyphs now
