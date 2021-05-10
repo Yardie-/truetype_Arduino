@@ -89,6 +89,10 @@ void truetypeClass::setTextColor(uint8_t _onLine, uint8_t _inside){
   this->colorInside = _inside;
 }
 
+uint8_t truetypeClass::getTextRotation(){
+  return this->stringRotation;
+}
+
 void truetypeClass::setTextRotation(uint16_t _rotation){
   switch(_rotation){
     case ROTATE_90:
@@ -772,7 +776,6 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
       if(_y > this->textBoundary.end_y){
         break;
       }
-      Serial.println("newline");
     }
 
     //Not compatible with Compound glyphs now

@@ -162,7 +162,7 @@ class truetypeClass {
     void setTextColor(uint8_t _onLine, uint8_t _inside);
 #define setTextColour setTextColor //to satisfy a pedantic old Australian
     void setTextRotation(uint16_t _rotation);
-
+    uint8_t getTextRotation();
     uint16_t getStringWidth(const wchar_t _character[]);
     uint16_t getStringWidth(const char _character[]);
     uint16_t getStringWidth(const String _string);
@@ -172,7 +172,7 @@ class truetypeClass {
     void textDraw(int16_t _x, int16_t _y, const String _string);
 
     void end();
-
+    ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight}; //when I write a get this can be private
   private:
     File file;
 
@@ -257,7 +257,7 @@ class truetypeClass {
     int16_t characterSpace = 0;
     uint16_t displayWidth = 400;
     uint16_t displayHeight = 400;
-    ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight};
+    
     uint16_t displayWidthFrame = 400;
     uint16_t framebufferBit = 8;
     uint8_t framebufferDirection = 0;
