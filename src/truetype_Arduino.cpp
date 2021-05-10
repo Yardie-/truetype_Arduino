@@ -40,11 +40,12 @@ uint8_t truetypeClass::setTtfFile(File _file, uint8_t _checkCheckSum){
   return 1;
 }
 
-void truetypeClass::setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint8_t _framebufferDirection, uint8_t *_framebuffer) {
+void truetypeClass::setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint16_t _framebufferDirection, uint8_t *_framebuffer) {
   this->displayWidth = _framebufferWidth;
   this->displayHeight = _framebufferHeight;
   this->framebufferBit = _framebuffer_bit;
-  this->framebufferDirection = _framebufferDirection;
+  //~ this->framebufferDirection = _framebufferDirection;
+  this->setTextRotation(_framebufferDirection);
   this->userFrameBuffer = _framebuffer;
 
   if(this->framebufferDirection){

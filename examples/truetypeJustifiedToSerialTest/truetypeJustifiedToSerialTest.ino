@@ -35,6 +35,8 @@
  * Also to help clarify some terms
  * and ideas
  * They are not required by the class
+ * 
+ * This adds justification to the base example
  *  
 */
 
@@ -42,7 +44,7 @@
 
 #define WIDTH_PIXELS      64 // this needs to be a multiple of 8
 #define HEIGHT_PIXELS     40
-#define BITS_PER_PIXEL     8 // either 1, 4, or 8
+#define BITS_PER_PIXEL     1 // either 1, 4, or 8
 
 #define DISPLAY_HEIGHT    HEIGHT_PIXELS
 #define DISPLAY_WIDTH     WIDTH_PIXELS 
@@ -108,12 +110,18 @@ void setup() {
     //TrueType class string parameter settings
     truetype.setCharacterSize(20);
     truetype.setCharacterSpacing(0);
+    truetype.breakLine = false; // force one line only no wrapping
     // As we are rotated these change
     truetype.setTextBoundary(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    truetype.setTextColor(0xFF, 0xFF); // only the relevant bit will be set
-
+    truetype.setTextColor(0xFF, 0xFF); // only the relevant bit/s will be set
+    String str = "Hello";
+    uint16_t width = truetype.getStringWidth(str);
+    int16_t to_centre = DISPLAY_WIDTH / 2 - width / 2;
+    int16_t to_right = DISPLAY_WIDTH - width;
+    
     //Write a string to the framebuffer
-    truetype.textDraw(10, 10, "Hello");
+    truetype.textDraw(to_centre, 0, str);
+    truetype.textDraw(to_right, 20, str);
     //Export framebuffer to screen
     //FLASH_TO_SCREEN();
     Serial.println("The buffer looks like this.");

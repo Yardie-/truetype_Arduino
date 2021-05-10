@@ -155,7 +155,7 @@ class truetypeClass {
     truetypeClass();
 
     uint8_t setTtfFile(File _file, uint8_t _checkCheckSum = 0);
-    void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint8_t _framebufferDirection, uint8_t *_framebuffer);
+    void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint16_t _framebufferDirection, uint8_t *_framebuffer);
     void setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning = 1);
     void setCharacterSize(uint16_t _characterSize);
     void setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels, uint16_t height_pixels);
