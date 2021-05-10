@@ -800,14 +800,14 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
 }
 
 void truetypeClass::textDraw(int16_t _x, int16_t _y, const char _character[]){
-  this->textDraw(_x, _y, (wchar_t*)_character);
+  uint16_t length = strlen(_character); //as \0 in strings is not supported srtlen works fine it will only give the value up to the \0 
+  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
+  this->stringToWchar(_character, character);
+  this->textDraw(_x, _y, character);
 }
 
 void truetypeClass::textDraw(int16_t _x, int16_t _y, const String _string){
-  uint16_t length = _string.length();
-  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  this->stringToWchar(_string, character);
-  this->textDraw(_x, _y, character);
+  this->textDraw(_x, _y, _string.c_str());
 }
 
 void truetypeClass::addPixel(int16_t _x, int16_t _y, uint8_t _colorCode) {
@@ -909,14 +909,14 @@ uint16_t truetypeClass::getStringWidth(const wchar_t _character[]){
 }
 
 uint16_t truetypeClass::getStringWidth(const char _character[]){
-  return this->getStringWidth((wchar_t*)_character);
+  uint16_t length = strlen(_character); //as \0 in strings is not supported srtlen works fine it will only give the value up to the \0 
+  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
+  this->stringToWchar(_character, character);
+  return this->getStringWidth(character);
 }
 
 uint16_t truetypeClass::getStringWidth(const String _string){
-  uint16_t length = _string.length();
-  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  this->stringToWchar(_string, character);
-  return this->getStringWidth(character);
+  return this->getStringWidth(_string.c_str());
 }
 
 /* Points*/
@@ -976,7 +976,7 @@ uint32_t truetypeClass::seekToTable(const char *name) {
 }
 
 /* calculate */
-void truetypeClass::stringToWchar(String _string, wchar_t _charctor[]) {
+void truetypeClass::stringToWchar(const char * _string, wchar_t _charctor[]) {
   uint16_t s = 0;
   uint8_t c = 0;
   uint32_t codeu32;

@@ -7,13 +7,25 @@
 
 #define TRUETYPE_H
 
-#if !defined _SPI_H_INCLUDED
-#include "SPI.h"
-#endif /*_SPI_H_INCLUDED*/
+//~ #if !defined _SPI_H_INCLUDED
+//~ #include "SPI.h"
+//~ #endif /*_SPI_H_INCLUDED*/
 
 #if defined ESP32
 #include "FS.h"
 #endif /*FS_H*/
+
+#ifndef ARDUINO
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stdint.h>
+#include <uchar.h>
+#include <stdbool.h>
+#include <stdio.h>
+using namespace std;
+#define String string
+#endif
 
 #define FLAG_ONCURVE (1 << 0)
 #define FLAG_XSHORT (1 << 1)
@@ -249,7 +261,7 @@ class truetypeClass {
     uint8_t colorInside = 0x00;
     uint8_t *userFrameBuffer;
     void addPixel(int16_t _x, int16_t _y, uint8_t _colorCode);
-    void stringToWchar(String _string, wchar_t _charctor[]);
+    void stringToWchar(const char * _string, wchar_t _charctor[]);
 
     uint8_t GetU8ByteCount(char _ch);
     bool IsU8LaterByte(char _ch);
