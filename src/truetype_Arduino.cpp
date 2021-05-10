@@ -76,10 +76,11 @@ void truetypeClass::setCharacterSpacing(int16_t _characterSpace, uint8_t _kernin
   this->kerningOn = _kerning;
 }
 
-void truetypeClass::setTextBoundary(uint16_t _start_x, uint16_t _end_x, uint16_t _end_y){
-  this->start_x = _start_x;
-  this->end_x = _end_x;
-  this->end_y = _end_y;
+void truetypeClass::setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels, uint16_t height_pixels){
+  this->textBoundary.x = x;
+  this->textBoundary.y = x;
+  this->textBoundary.end_x = width_pixels - x;
+  this->textBoundary.end_y = height_pixels - y ;
 }
 
 void truetypeClass::setTextColor(uint8_t _onLine, uint8_t _inside){
@@ -764,10 +765,10 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
     ttHMetric_t hMetric = getHMetric(code);
     uint16_t width = this->characterSize * (glyph.xMax - glyph.xMin) / (this->yMax - this->yMin);
     //Line breaks when reaching the edge of the display 
-    if(((hMetric.leftSideBearing + width + _x) > this->end_x) && this->breakLine){
-      _x = this->start_x;
+    if(((hMetric.leftSideBearing + width + _x) > this->textBoundary.end_x) && this->breakLine){
+      _x = this->textBoundary.x;
       _y += this->characterSize;
-      if(_y > this->end_y){
+      if(_y > this->textBoundary.end_y){
         break;
       }
       Serial.println("newline");
@@ -814,7 +815,7 @@ void truetypeClass::addPixel(int16_t _x, int16_t _y, uint8_t _colorCode) {
   //Serial.printf("addPix(%3d, %3d)\n", _x, _y);
   uint8_t *buf_ptr;
 // limit to boundary co-ordinates the boundary is always in the same orientation as the string not the buffer
-  if (( _x < this->start_x )||(_x >= this->end_x) || (_y >= this->end_y))
+  if (( _x < this->textBoundary.x )||( _x >= this->textBoundary.end_x ) || ( _y < this->textBoundary.y ) || ( _y >= this->textBoundary.end_y ))
     return;
   //Rotate co-ordinates relative to the buffer 
   uint16_t temp = _x;

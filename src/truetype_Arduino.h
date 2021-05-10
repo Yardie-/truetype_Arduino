@@ -143,6 +143,13 @@ typedef struct {
   int16_t leftSideBearing;
 } ttHMetric_t;
 
+typedef struct {
+  int16_t x;
+  int16_t y;
+  uint16_t end_x;
+  uint16_t end_y;
+} ttTextBoundary_t;
+
 class truetypeClass {
   public:
     truetypeClass();
@@ -151,7 +158,7 @@ class truetypeClass {
     void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint8_t _framebufferDirection, uint8_t *_framebuffer);
     void setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning = 1);
     void setCharacterSize(uint16_t _characterSize);
-    void setTextBoundary(uint16_t _start_x, uint16_t _end_x, uint16_t _end_y);
+    void setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels, uint16_t height_pixels);
     void setTextColor(uint8_t _onLine, uint8_t _inside);
 #define setTextColour setTextColor //to satisfy a pedantic old Australian
     void setTextRotation(uint16_t _rotation);
@@ -248,11 +255,9 @@ class truetypeClass {
     uint16_t characterSize = 20;
     uint8_t kerningOn = 1;
     int16_t characterSpace = 0;
-    int16_t start_x = 10;
-    int16_t end_x = 300;
-    int16_t end_y = 300;
     uint16_t displayWidth = 400;
     uint16_t displayHeight = 400;
+    ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight};
     uint16_t displayWidthFrame = 400;
     uint16_t framebufferBit = 8;
     uint8_t framebufferDirection = 0;
