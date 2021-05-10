@@ -58,7 +58,7 @@
 
 //TrueType class declaration
 truetypeClass truetype = truetypeClass();
-uint8_t *framebuffer;
+uint8_t framebuffer[FRAMEBUFFER_SIZE]; //this works also
 
 void print_bitmap(uint8_t *framebuffer, uint16_t width_in_bytes, uint16_t height_in_pixels) {
   for (int i = 0; i < (width_in_bytes * height_in_pixels); i++) {
@@ -79,9 +79,8 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  //Prepare a frame buffer
-
-  framebuffer = (uint8_t *)calloc(sizeof(uint8_t), FRAMEBUFFER_SIZE);
+  //Prepare a frame buffer for e-paper bit is set = white
+  memset(framebuffer,0xFF, FRAMEBUFFER_SIZE);
   if (!framebuffer) {
     Serial.println("alloc memory failed !!!");
     while (1);
@@ -113,7 +112,7 @@ void setup() {
     truetype.breakLine = false; // force one line only no wrapping
     // As we are rotated these change
     truetype.setTextBoundary(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    truetype.setTextColor(0xFF, 0xFF); // only the relevant bit/s will be set
+    truetype.setTextColor(0x00, 0x00); // only the relevant bit/s will be unset as required
     String str = "Hello";
     uint16_t width = truetype.getStringWidth(str);
     int16_t to_centre = DISPLAY_WIDTH / 2 - width / 2;
