@@ -44,7 +44,7 @@
 
 #define WIDTH_PIXELS      64 // this needs to be a multiple of 8
 #define HEIGHT_PIXELS     40
-#define BITS_PER_PIXEL     1 // either 1, 4, or 8
+#define BITS_PER_PIXEL     4 // either 1, 4, or 8
 
 #define DISPLAY_HEIGHT    HEIGHT_PIXELS
 #define DISPLAY_WIDTH     WIDTH_PIXELS 
@@ -78,13 +78,12 @@ void print_bitmap(uint8_t *framebuffer, uint16_t width_in_bytes, uint16_t height
 void setup() {
   Serial.begin(115200);
   delay(1000);
-
-  //Prepare a frame buffer for e-paper bit is set = white
-  memset(framebuffer,0xFF, FRAMEBUFFER_SIZE);
   if (!framebuffer) {
-    Serial.println("alloc memory failed !!!");
+    Serial.println("No frame buffer to work with !!!");
     while (1);
   }
+  //Prepare a frame buffer for e-paper bit is set = white
+  memset(framebuffer,0xFF, FRAMEBUFFER_SIZE);
   Serial.print("The image buffer is ");
   Serial.print(FRAMEBUFFER_SIZE);
   Serial.println(" bytes");
@@ -115,6 +114,7 @@ void setup() {
     truetype.setTextColor(0x00, 0x00); // only the relevant bit/s will be unset as required
     String str = "Hello";
     uint16_t width = truetype.getStringWidth(str);
+    //Now I know the width in pixels of the string I can manipulate wher the text is printed    
     int16_t to_centre = DISPLAY_WIDTH / 2 - width / 2;
     int16_t to_right = DISPLAY_WIDTH - width;
     
