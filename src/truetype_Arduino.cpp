@@ -76,8 +76,8 @@ void truetypeClass::setWordGap(int8_t gap){
   this->wordGap = gap;
 }
 
-void truetypeClass::setUseLineBreaks(bool use){
-  this->breakLine = use;
+void truetypeClass::setUseLineBreaks(bool use_breaks){
+  this->breakLine = use_breaks;
 }
 
 void truetypeClass::setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning){
