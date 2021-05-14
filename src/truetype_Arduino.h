@@ -4,7 +4,7 @@
   TrueType™ Reference Manual
   https://developer.apple.com/fonts/TrueType-Reference-Manual/
 */
-
+#ifndef TRUETYPE_H
 #define TRUETYPE_H
 
 //~ #if !defined _SPI_H_INCLUDED
@@ -158,6 +158,8 @@ class truetypeClass {
     void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint16_t _framebufferDirection, uint8_t *_framebuffer);
     void setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning = 1);
     void setCharacterSize(uint16_t _characterSize);
+    void setWordGap(int8_t gap);
+    void setUseLineBreaks(bool use);
     void setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels, uint16_t height_pixels);
     void setTextColor(uint8_t _onLine, uint8_t _inside);
 #define setTextColour setTextColor //to satisfy a pedantic old Australian
@@ -166,7 +168,7 @@ class truetypeClass {
     uint16_t getStringWidth(const wchar_t _character[]);
     uint16_t getStringWidth(const char _character[]);
     uint16_t getStringWidth(const String _string);
-    bool breakLine = true;
+   
     void textDraw(int16_t _x, int16_t _y, const wchar_t _character[]);
     void textDraw(int16_t _x, int16_t _y, const char _character[]);
     void textDraw(int16_t _x, int16_t _y, const String _string);
@@ -175,7 +177,8 @@ class truetypeClass {
     ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight}; //when I write a get this can be private
   private:
     File file;
-
+    bool breakLine = true;
+    int8_t wordGap = 0;    
     int16_t xMin, xMax, yMin, yMax;
 
     const int numTablesPos = 4;
@@ -271,3 +274,4 @@ class truetypeClass {
     uint8_t GetU8ByteCount(char _ch);
     bool IsU8LaterByte(char _ch);
 };
+#endif

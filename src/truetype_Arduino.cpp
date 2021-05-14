@@ -72,6 +72,14 @@ void truetypeClass::setCharacterSize(uint16_t _characterSize){
   this->characterSize = _characterSize;
 }
 
+void truetypeClass::setWordGap(int8_t gap){
+  this->wordGap = gap;
+}
+
+void truetypeClass::setUseLineBreaks(bool use){
+  this->breakLine = use;
+}
+
 void truetypeClass::setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning){
   this->characterSpace = _characterSpace;
   this->kerningOn = _kerning;
@@ -749,12 +757,15 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
     //space (half-width, full-width)
     if((_character[c] == ' ') || (_character[c] == L'　')){
       prev_code = 0;
-      _x += this->characterSize / 4;
+      if(this->wordGap == 0)
+        _x += this->characterSize / 4;
+      else
+        _x += this->wordGap;
       c++;
       continue;
     }
     //Serial.printf("%c\n", _character[c]);
-
+    
     uint16_t code = this->codeToGlyphId(_character[c]);
     //Serial.printf("code:%4d\n", code);
     this->readGlyph(code);
@@ -769,8 +780,10 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
 
     ttHMetric_t hMetric = getHMetric(code);
     uint16_t width = this->characterSize * (glyph.xMax - glyph.xMin) / (this->yMax - this->yMin);
-    //Line breaks when reaching the edge of the display 
-    if(((hMetric.leftSideBearing + width + _x) > this->textBoundary.end_x) && this->breakLine){
+    //if breakLine is true line breaks when reaching the edge of the display 
+    //Always breaks on \n
+    
+    if((_character[c] == '\n')||(((hMetric.leftSideBearing + width + _x) > this->textBoundary.end_x) && this->breakLine)){
       _x = this->textBoundary.x;
       _y += this->characterSize;
       if(_y > this->textBoundary.end_y){
