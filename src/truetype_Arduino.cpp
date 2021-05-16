@@ -886,15 +886,6 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
       if(_y > this->textBoundary.end_y){
         break;
       }
-    }
-
-    //Line breaks with line feed code
-    if(_character[c] == '\n'){
-      _x = this->start_x;
-      _y += this->characterSize;
-      if(_y > this->end_y){
-        break;
-      }
       continue;
     }
 
@@ -925,30 +916,22 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
 }
 
 void truetypeClass::textDraw(int16_t _x, int16_t _y, const char _character[]){
-  uint16_t length = 0;
-  while(_character[length] != '\0'){
-    length++;
-  }
-  wchar_t *wcharacter = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  for(uint16_t i = 0; i < length; i++){
-    wcharacter[i] = _character[i];
-  }
-  this->textDraw(_x, _y, wcharacter);
+  uint16_t length = strlen(_character); //as \0 in strings is not supported srtlen works fine it will only give the value up to the \0 
+  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
+  this->stringToWchar(_character, character);
+  this->textDraw(_x, _y, character);
 }
 
 void truetypeClass::textDraw(int16_t _x, int16_t _y, const String _string){
-  uint16_t length = _string.length();
-  wchar_t *wcharacter = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  this->stringToWchar(_string, wcharacter);
-  this->textDraw(_x, _y, wcharacter);
+  this->textDraw(_x, _y, _string.c_str());
 }
 
 void truetypeClass::addPixel(int16_t _x, int16_t _y, uint8_t _colorCode) {
   //Serial.printf("addPix(%3d, %3d)\n", _x, _y);
   uint8_t *buf_ptr;
-
-  //limit to boundary co-ordinates the boundary is always in the same orientation as the string not the buffer
-  if ((_x < this->start_x) || (_x >= this->end_x) || (_y >= this->end_y)){
+// limit to boundary co-ordinates the boundary is always in the same orientation as the string not the buffer
+  if (( _x < this->textBoundary.x )||( _x >= this->textBoundary.end_x ) || ( _y < this->textBoundary.y ) || ( _y >= this->textBoundary.end_y ))
+  {
     return;
   }
 
@@ -1046,22 +1029,15 @@ uint16_t truetypeClass::getStringWidth(const wchar_t _character[]){
 }
 
 uint16_t truetypeClass::getStringWidth(const char _character[]){
-  uint16_t length = 0;
-  while(_character[length] != '\0'){
-    length++;
-  }
-  wchar_t *wcharacter = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  for(uint16_t i = 0; i < length; i++){
-    wcharacter[i] = _character[i];
-  }
-  return this->getStringWidth(wcharacter);
+  uint16_t length = strlen(_character); //as \0 in strings is not supported srtlen works fine it will only give the value up to the \0 
+  wchar_t *character = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
+  this->stringToWchar(_character, character);
+  return this->getStringWidth(character);
+  
 }
 
 uint16_t truetypeClass::getStringWidth(const String _string){
-  uint16_t length = _string.length();
-  wchar_t *wcharacter = (wchar_t *)calloc(sizeof(wchar_t), length + 1);
-  this->stringToWchar(_string, wcharacter);
-  return this->getStringWidth(wcharacter);
+  return this->getStringWidth(_string.c_str());
 }
 
 /* Points*/
