@@ -160,22 +160,25 @@ class truetypeClass {
     void setCharacterSize(uint16_t _characterSize);
     void setWordGap(int8_t gap);
     void setUseLineBreaks(bool use);
+    uint16_t getTextBoundaryWidth();
+    uint16_t getTextBoundaryHeight();
     void setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels, uint16_t height_pixels);
+    void setTextBoundaryToMaximum();
     void setTextColor(uint8_t _onLine, uint8_t _inside);
-#define setTextColour setTextColor //to satisfy a pedantic old Australian
+#define setTextColour setTextColor //to satisfy a pedantic old Australian me
     void setTextRotation(uint16_t _rotation);
     uint8_t getTextRotation();
     uint16_t getStringWidth(const wchar_t _character[]);
     uint16_t getStringWidth(const char _character[]);
     uint16_t getStringWidth(const String _string);
-   
+    
     void textDraw(int16_t _x, int16_t _y, const wchar_t _character[]);
     void textDraw(int16_t _x, int16_t _y, const char _character[]);
     void textDraw(int16_t _x, int16_t _y, const String _string);
 
     void end();
-    ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight}; //when I write a get this can be private
   private:
+    ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight}; //when I write a get this can be private
     File file;
     bool breakLine = true;
     int8_t wordGap = 0;    

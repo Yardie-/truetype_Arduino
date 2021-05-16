@@ -65,6 +65,7 @@ void truetypeClass::setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebu
         break;
     }
   }
+  this->setTextBoundaryToMaximum(); //default to a full size buffer
   return;
 }
 
@@ -90,6 +91,30 @@ void truetypeClass::setTextBoundary(int16_t x, int16_t y, uint16_t width_pixels,
   this->textBoundary.y = x;
   this->textBoundary.end_x = width_pixels - x;
   this->textBoundary.end_y = height_pixels - y ;
+}
+
+void truetypeClass::setTextBoundaryToMaximum()
+{
+  this->textBoundary.x = 0;
+  this->textBoundary.y = 0;
+  if(this->stringRotation == ROTATE_90 || this->stringRotation == ROTATE_270)
+  {
+    this->textBoundary.end_x = this->displayHeight;
+    this->textBoundary.end_y = this->displayWidth;
+  }
+  else
+  {
+    this->textBoundary.end_x = this->displayWidth;
+    this->textBoundary.end_y = this->displayHeight;
+  }
+}
+
+uint16_t truetypeClass::getTextBoundaryWidth(){
+  return this->textBoundary.end_x - this->textBoundary.x;
+}
+
+uint16_t truetypeClass::getTextBoundaryHeight(){
+  return this->textBoundary.end_y - this->textBoundary.y;
 }
 
 void truetypeClass::setTextColor(uint8_t _onLine, uint8_t _inside){
