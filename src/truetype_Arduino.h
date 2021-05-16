@@ -87,6 +87,14 @@ typedef struct {
   ttPoint_t *points;
 } ttGlyph_t;
 
+typedef struct {
+  int16_t dx;
+  int16_t dy;
+  uint8_t enableScale;
+  uint16_t scale_x;
+  uint16_t scale_y;
+} ttGlyphTransformation_t;
+
 /* currently only support format4 cmap tables */
 typedef struct {
   uint16_t version;
@@ -180,6 +188,8 @@ class truetypeClass {
   private:
     ttTextBoundary_t textBoundary = {0, 0, displayWidth, displayHeight}; //when I write a get this can be private
     File file;
+
+    uint16_t charCode;
     bool breakLine = true;
     int8_t wordGap = 0;    
     int16_t xMin, xMax, yMin, yMax;
@@ -204,13 +214,14 @@ class truetypeClass {
     uint32_t seekToTable(const char *name);
     int readTableDirectory(int checkCheckSum);
     void readHeadTable();
-    void readCoords(char xy);
+    void readCoords(char _xy, uint16_t _startPoint = 0);
 
     //Glyph
+    ttGlyphTransformation_t glyphTransformation;
     uint32_t getGlyphOffset(uint16_t index);
-    void insertGlyph(int contour, int position, int16_t x, int16_t y, uint8_t flag);
     uint16_t codeToGlyphId(uint16_t code);
-    uint8_t readSimpleGlyph();
+    uint8_t readSimpleGlyph(uint8_t _addGlyph = 0);
+    uint8_t readCompoundGlyph();
 
     //cmap. maps character codes to glyph indices
     ttCmapIndex_t cmapIndex;
