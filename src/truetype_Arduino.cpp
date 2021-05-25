@@ -73,8 +73,12 @@ void truetypeClass::setCharacterSize(uint16_t _characterSize){
   this->characterSize = _characterSize;
 }
 
-void truetypeClass::setWordGap(int8_t gap){
+void truetypeClass::setWordGap(int16_t gap){
   this->wordGap = gap;
+}
+
+void truetypeClass::resetWordGap(){
+  this->wordGap = -0;
 }
 
 void truetypeClass::setUseLineBreaks(bool use_breaks){
@@ -854,7 +858,7 @@ void truetypeClass::textDraw(int16_t _x, int16_t _y, const wchar_t _character[])
     //space (half-width, full-width)
     if((_character[c] == ' ') || (_character[c] == L'　')){
       prev_code = 0;
-      if(this->wordGap == 0)
+      if(this->wordGap == -0) // allow zero setting 
         _x += this->characterSize / 4;
       else
         _x += this->wordGap;

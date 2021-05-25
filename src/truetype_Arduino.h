@@ -23,6 +23,9 @@
 #include <uchar.h>
 #include <stdbool.h>
 #include <stdio.h>
+//still work to do here
+#include <iostream>
+#include <fstream> 
 using namespace std;
 #define String string
 #endif
@@ -166,7 +169,8 @@ class truetypeClass {
     void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint16_t _framebufferDirection, uint8_t *_framebuffer);
     void setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning = 1);
     void setCharacterSize(uint16_t _characterSize);
-    void setWordGap(int8_t gap);
+    void setWordGap(int16_t gap);
+    void resetWordGap();
     void setUseLineBreaks(bool use);
     uint16_t getTextBoundaryWidth();
     uint16_t getTextBoundaryHeight();
@@ -191,7 +195,7 @@ class truetypeClass {
 
     uint16_t charCode;
     bool breakLine = true;
-    int8_t wordGap = 0;    
+    int16_t wordGap = -0;    
     int16_t xMin, xMax, yMin, yMax;
 
     const int numTablesPos = 4;
