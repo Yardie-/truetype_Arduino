@@ -169,6 +169,7 @@ class truetypeClass {
     void setFramebuffer(uint16_t _framebufferWidth, uint16_t _framebufferHeight, uint16_t _framebuffer_bit, uint16_t _framebufferDirection, uint8_t *_framebuffer);
     void setCharacterSpacing(int16_t _characterSpace, uint8_t _kerning = 1);
     void setCharacterSize(uint16_t _characterSize);
+    int16_t getWordGap();
     void setWordGap(int16_t gap);
     void resetWordGap();
     void setUseLineBreaks(bool use);

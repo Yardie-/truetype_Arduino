@@ -77,6 +77,10 @@ void truetypeClass::setWordGap(int16_t gap){
   this->wordGap = gap;
 }
 
+int16_t truetypeClass::getWordGap(){
+  return this->wordGap;
+}
+
 void truetypeClass::resetWordGap(){
   this->wordGap = -0;
 }
@@ -1009,7 +1013,10 @@ uint16_t truetypeClass::getStringWidth(const wchar_t _character[]){
     //space (half-width, full-width)
     if((_character[c] == ' ') || (_character[c] == L'　')){
       prev_code = 0;
-      output += this->characterSize / 4;
+      if(this->wordGap == -0) // allow zero setting 
+        output += this->characterSize / 4;
+      else
+        output += this->wordGap;
       c++;
       continue;
     }
